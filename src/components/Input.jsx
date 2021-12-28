@@ -1,8 +1,9 @@
 import React from "react";
 
 const Input = (props) => {
-  const { label, error, name, onChange, defaultValue } = props;
-  let className = "form-control py-1 d-lg-inline";
+  const { label, error, name, onChange, defaultValue, placeholder, value } =
+    props;
+  let className = "form-control py-1 d-lg-inline mb-lg-2";
   if (error !== undefined) {
     className += " is-invalid";
   }
@@ -15,6 +16,8 @@ const Input = (props) => {
         name={name}
         onChange={onChange}
         defaultValue={defaultValue}
+        placeholder={placeholder}
+        value={value}
       />
       <div className="invalid-feedback">{props.error}</div>
     </div>

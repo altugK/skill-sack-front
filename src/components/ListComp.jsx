@@ -1,5 +1,4 @@
-import { ListGroup } from "react-bootstrap";
-import Input from "./Input";
+import { Form, ListGroup, Stack } from "react-bootstrap";
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import {
   deleteEmployee,
@@ -15,11 +14,17 @@ import { useDrag, useDrop } from "react-dnd";
 import { toast } from "react-toastify";
 
 const ListComp = (props) => {
+  ///////////////////////// TOP STATES AREA ///////////////////////////////
+
   const { item, variant, onDelete, whichOne, onUpdate } = props;
 
   const [form, setForm] = useState({
     name: null,
   });
+
+  ///////////////////////// TOP STATES AREA END///////////////////////////////
+
+  ///////////////////////// API PROGRESS AREA///////////////////////////////
 
   const deleteDepartmentsPending = useApiProgress(
     "delete",
@@ -38,6 +43,10 @@ const ListComp = (props) => {
     true
   );
 
+  ///////////////////////// API PROGRESS END///////////////////////////////
+
+  ///////////////////////// DELETING AREA///////////////////////////////
+
   const onClickDelete = async () => {
     if (whichOne === "department") {
       await deleteDepartment(item.id);
@@ -55,7 +64,10 @@ const ListComp = (props) => {
       toast.error(`Employee ${item.name} deleted`);
     }
   };
+  ///////////////////////// DELETING AREA END///////////////////////////////
 
+  ///////////////////////// UPDATING FETCH AREA///////////////////////////////
+  //TODO: fix one letter changing 400 error
   const onChange = async (event) => {
     const { value } = event.target;
     setForm((previousForm) => ({ ...previousForm, name: value }));
@@ -82,7 +94,10 @@ const ListComp = (props) => {
       }
     }
   };
+  ///////////////////////// UPDATING FETCH AREA END///////////////////////////////
 
+  ///////////////////////// DRAG AND DROP AREA///////////////////////////////
+  //TODO:add delete employees skill
   const dragUpdate = async (updatedItem) => {
     let response;
     if (updatedItem.element === "department") {
@@ -128,34 +143,31 @@ const ListComp = (props) => {
   } else if (whichOne === "skill") {
     witchRef = dragSkillRef;
   }
+  ///////////////////////// DRAG AND DROP AREA END///////////////////////////////
 
   return (
     <div className="list-group valid-feedback " ref={witchRef}>
       <ListGroup.Item action variant={variant}>
-        <div className="row mx-auto">
-          <div className="col-md-10">
-            <Input
-              name={whichOne}
-              defaultValue={item.name}
-              onChange={onChange}
-            />
-          </div>
-          <div className="col-md-2">
-            <ButtonWithProgress
-              className="btn btn-danger btn-sm float-end"
-              text="x"
-              onClick={onClickDelete}
-              pendingApiCall={
-                (whichOne === "department" && deleteDepartmentsPending) ||
-                (whichOne === "skill" && deleteSkillsPending) ||
-                (whichOne === "employee" && deleteEmployeesPending)
-              }
-            />
-            {isDepartmentDragging && "🏬"}
-            {isSkillDragging && "🧍"}
-            {isEmployeeOver && "🧑‍💼"}
-          </div>
-        </div>
+        <Stack direction="horizontal" gap={3}>
+          {isDepartmentDragging && "🏬"}
+          {isSkillDragging && "🧍"}
+          {isEmployeeOver && "🧑‍💼"}
+          <Form.Control
+            name={whichOne}
+            defaultValue={item.name}
+            onChange={onChange}
+          />
+          <ButtonWithProgress
+            className="btn btn-danger btn-sm"
+            text="🗑️"
+            onClick={onClickDelete}
+            pendingApiCall={
+              (whichOne === "department" && deleteDepartmentsPending) ||
+              (whichOne === "skill" && deleteSkillsPending) ||
+              (whichOne === "employee" && deleteEmployeesPending)
+            }
+          />
+        </Stack>
       </ListGroup.Item>
     </div>
   );

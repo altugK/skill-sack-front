@@ -6,7 +6,7 @@ const ButtonWithProgress = (props) => {
 
   return (
     <button
-      className={className || "btn btn-primary btn-sm form-range"}
+      className={className || "btn btn-primary btn-sm form-range mb-lg-2"}
       onClick={onClick}
       disabled={disabled}
       name={name}

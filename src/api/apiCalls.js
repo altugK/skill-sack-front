@@ -1,15 +1,27 @@
 import axios from "axios";
 
-export const getDepartments = () => {
-  return axios.get("/api/1.0/departments");
+export const getDepartments = (name, page = 0) => {
+  if (name) {
+    return axios.get(`/api/1.0/departments/${name}?page=${page}`);
+  } else {
+    return axios.get(`/api/1.0/departments?page=${page}`);
+  }
 };
 
-export const getSkills = () => {
-  return axios.get("/api/1.0/skills");
+export const getSkills = (name, page = 0) => {
+  if (name) {
+    return axios.get(`/api/1.0/skills/${name}?page=${page}`);
+  } else {
+    return axios.get(`/api/1.0/skills?page=${page}`);
+  }
 };
 
-export const getEmployees = () => {
-  return axios.get("/api/1.0/employees");
+export const getEmployees = (name, page = 0) => {
+  if (name) {
+    return axios.get(`/api/1.0/employees/${name}?page=${page}`);
+  } else {
+    return axios.get(`/api/1.0/employees?page=${page}`);
+  }
 };
 
 export const postDepartment = (body) => {
@@ -46,4 +58,8 @@ export const updateSkill = (id, body) => {
 
 export const updateEmployee = (id, body) => {
   return axios.put(`/api/1.0/employee/${id}`, body);
+};
+
+export const deleteEmployeeSkill = (employeeid, skillid) => {
+  return axios.delete(`/api/1.0/employee/${employeeid}/${skillid}`);
 };
