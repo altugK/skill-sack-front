@@ -15,14 +15,12 @@ import {
 import {
   Accordion,
   Badge,
-  Button,
   ListGroup,
   Pagination,
   Spinner,
 } from "react-bootstrap";
 import Input from "../components/Input";
 import { toast } from "react-toastify";
-import { useDrag } from "react-dnd";
 
 const HomePage = () => {
   ///////////////////////// TOP STATES AREA ///////////////////////////////
@@ -301,7 +299,6 @@ const HomePage = () => {
   ///////////////////////// PAGINATION AREA ///////////////////////////////
 
   const onNextPage = (event) => {
-    console.log(event.target.name);
     event.preventDefault();
     const { name } = event.target;
     if (name === "department") {

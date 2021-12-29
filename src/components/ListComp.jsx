@@ -9,7 +9,7 @@ import {
   updateSkill,
 } from "../api/apiCalls";
 import { useApiProgress } from "../shared/ApiProgress";
-import React, { useState } from "react";
+import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { toast } from "react-toastify";
 
@@ -17,10 +17,6 @@ const ListComp = (props) => {
   ///////////////////////// TOP STATES AREA ///////////////////////////////
 
   const { item, variant, onDelete, whichOne, onUpdate } = props;
-
-  const [form, setForm] = useState({
-    name: null,
-  });
 
   ///////////////////////// TOP STATES AREA END///////////////////////////////
 
@@ -67,31 +63,22 @@ const ListComp = (props) => {
   ///////////////////////// DELETING AREA END///////////////////////////////
 
   ///////////////////////// UPDATING FETCH AREA///////////////////////////////
-  //TODO: fix one letter changing 400 error
   const onChange = async (event) => {
+    event.preventDefault();
     const { value } = event.target;
-    setForm((previousForm) => ({ ...previousForm, name: value }));
 
-    if (whichOne === "department") {
-      try {
-        await updateDepartment(item.id, form);
-      } catch (err) {
-        toast.error(err.message);
+    try {
+      if (whichOne === "department") {
+        await updateDepartment(item.id, { name: value });
       }
-    }
-    if (whichOne === "skill") {
-      try {
-        await updateSkill(item.id, form);
-      } catch (err) {
-        toast.error(err.message);
+      if (whichOne === "skill") {
+        await updateSkill(item.id, { name: value });
       }
-    }
-    if (whichOne === "employee") {
-      try {
-        await updateEmployee(item.id, form);
-      } catch (err) {
-        toast.error(err.message);
+      if (whichOne === "employee") {
+        await updateEmployee(item.id, { name: value });
       }
+    } catch (error) {
+      toast.error(Object.values(error.response.data.validationErrors)[0]);
     }
   };
   ///////////////////////// UPDATING FETCH AREA END///////////////////////////////
@@ -144,7 +131,6 @@ const ListComp = (props) => {
     witchRef = dragSkillRef;
   }
   ///////////////////////// DRAG AND DROP AREA END///////////////////////////////
-
   return (
     <div className="list-group valid-feedback " ref={witchRef}>
       <ListGroup.Item action variant={variant}>
