@@ -15,6 +15,7 @@ import {
 import {
   Accordion,
   Badge,
+  Button,
   ListGroup,
   Pagination,
   Spinner,
@@ -298,44 +299,25 @@ const HomePage = () => {
 
   ///////////////////////// PAGINATION AREA ///////////////////////////////
 
-  const onNextPage = (event) => {
+  const onPaginationPage = (event) => {
     event.preventDefault();
-    const { name } = event.target;
-    if (name === "department") {
-      setDepartments((previousDepartmentPage) => ({
-        ...previousDepartmentPage,
-        number: previousDepartmentPage.number + 1,
-      }));
-    } else if (name === "skill") {
-      setSkills((previousSkillPage) => ({
-        ...previousSkillPage,
-        number: previousSkillPage.number + 1,
-      }));
-    } else if (name === "employee") {
-      setEmployees((previousEmployeePage) => ({
-        ...previousEmployeePage,
-        number: previousEmployeePage.number + 1,
-      }));
-    }
-  };
+    const name = event.target.name;
+    const nextOrPrevPage = name.includes("next") ? +1 : -1;
 
-  const onPreviousPage = (event) => {
-    event.preventDefault();
-    const { name } = event.target;
-    if (name === "department") {
+    if (name.includes("department")) {
       setDepartments((previousDepartmentPage) => ({
         ...previousDepartmentPage,
-        number: previousDepartmentPage.number - 1,
+        number: previousDepartmentPage.number + nextOrPrevPage,
       }));
-    } else if (name === "skill") {
+    } else if (name.includes("skill")) {
       setSkills((previousSkillPage) => ({
         ...previousSkillPage,
-        number: previousSkillPage.number - 1,
+        number: previousSkillPage.number + nextOrPrevPage,
       }));
-    } else if (name === "employee") {
+    } else if (name.includes("employee")) {
       setEmployees((previousEmployeePage) => ({
         ...previousEmployeePage,
-        number: previousEmployeePage.number - 1,
+        number: previousEmployeePage.number + nextOrPrevPage,
       }));
     }
   };
@@ -379,17 +361,23 @@ const HomePage = () => {
             <>
               <Pagination className="row-cols-1 col-form-label">
                 <Stack direction="horizontal" gap={2}>
-                  <Pagination.Prev
-                    name="department"
-                    onClick={onPreviousPage}
+                  <Button
+                    name="department prev"
+                    onClick={onPaginationPage}
+                    size="sm"
                     disabled={departments.first}
-                  />
-                  <Pagination.Next
+                  >
+                    ⏮️
+                  </Button>
+                  <Button
                     className="ms-auto"
-                    name="department"
-                    onClick={onNextPage}
+                    name="department next"
+                    onClick={onPaginationPage}
+                    size="sm"
                     disabled={departments.last}
-                  />
+                  >
+                    ⏭️
+                  </Button>
                 </Stack>
               </Pagination>
               <ListGroup>
@@ -459,17 +447,23 @@ const HomePage = () => {
             <>
               <Pagination className="row-cols-1 col-form-label">
                 <Stack direction="horizontal" gap={2}>
-                  <Pagination.Prev
-                    name="skill"
-                    onClick={onPreviousPage}
+                  <Button
+                    name="skill prev"
+                    onClick={onPaginationPage}
+                    size="sm"
                     disabled={skills.first}
-                  />
-                  <Pagination.Next
+                  >
+                    ⏮️
+                  </Button>
+                  <Button
                     className="ms-auto"
-                    name="skill"
-                    onClick={onNextPage}
+                    name="skill next"
+                    onClick={onPaginationPage}
+                    size="sm"
                     disabled={skills.last}
-                  />
+                  >
+                    ⏭️
+                  </Button>
                 </Stack>
               </Pagination>
               <ListGroup>
@@ -537,17 +531,23 @@ const HomePage = () => {
             <>
               <Pagination className="row-cols-1 col-form-label">
                 <Stack direction="horizontal" gap={2}>
-                  <Pagination.Prev
-                    name="employee"
-                    onClick={onPreviousPage}
+                  <Button
+                    name="employee prev"
+                    onClick={onPaginationPage}
+                    size="sm"
                     disabled={employees.first}
-                  />
-                  <Pagination.Next
+                  >
+                    ⏮️
+                  </Button>
+                  <Button
                     className="ms-auto"
-                    name="employee"
-                    onClick={onNextPage}
+                    name="employee next"
+                    onClick={onPaginationPage}
+                    size="sm"
                     disabled={employees.last}
-                  />
+                  >
+                    ⏭️
+                  </Button>
                 </Stack>
               </Pagination>
               <ListGroup>
