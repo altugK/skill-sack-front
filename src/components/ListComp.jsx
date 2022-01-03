@@ -89,13 +89,14 @@ const ListComp = (props) => {
     let response;
     if (updatedItem.element === "department") {
       response = await updateEmployee(item.id, { department: updatedItem.id });
+      console.log(response);
       toast(`Employee ${item.name} added to ${updatedItem.name} Department`);
     }
     if (updatedItem.element === "skill") {
       response = await updateEmployee(item.id, { skill: updatedItem.id });
       toast(`Skill ${updatedItem.name}  added to ${item.name} Employee`);
     }
-    onUpdate(item.id, response);
+    onUpdate(item.id, response,updatedItem);
   };
 
   const [{ isDepartmentDragging }, dragDepartmentRef] = useDrag({

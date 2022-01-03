@@ -287,13 +287,59 @@ const HomePage = () => {
 
   ///////////////////////// UPDATING AREA///////////////////////////////
 
-  const onUpdateEmployeeSuccess = (id, response) => {
+  const onUpdateEmployeeSuccess = (id, response, updatedItem) => {
+    const oldDepartmentId = employees.content.find(
+      (employee) => employee.id === id
+    ).department.id;
+
     setEmployees((previousEmployeePage) => ({
       ...previousEmployeePage,
       content: previousEmployeePage.content.map((employee) =>
         employee.id === id ? response.data : employee
       ),
     }));
+    if (updatedItem.element === "department") {
+      if (oldDepartmentId !== null) {
+        //old department employees include filter by response.employee
+        setDepartments((previousDepartmentPage) => ({
+          ...previousDepartmentPage,
+          content: previousDepartmentPage.content.map((department) =>
+            department.id === oldDepartmentId
+              ? {
+                  ...department,
+                  employees: department.employees.filter(
+                    (employee) => !employee.includes(response.data.name)
+                  ),
+                }
+              : department
+          ),
+        }));
+      }
+
+      // employee department changed
+      setDepartments((previousDepartmentPage) => ({
+        ...previousDepartmentPage,
+        content: previousDepartmentPage.content.map((department) =>
+          department.id === response.data.department.id
+            ? response.data.department
+            : department
+        ),
+      }));
+    }
+
+    if (updatedItem.element === "skill") {
+      setSkills((previousSkillPage) => ({
+        ...previousSkillPage,
+        content: previousSkillPage.content.map((skill) => {
+          if (skill.id === updatedItem.id) {
+            skill.employees.push(response.data.name);
+            return skill;
+          } else {
+            return skill;
+          }
+        }),
+      }));
+    }
   };
   ///////////////////////// UPDATING AREA END///////////////////////////////
 
@@ -580,7 +626,7 @@ const HomePage = () => {
                           <ListGroup>
                             {employee.skills.map((skill) => {
                               return (
-                                <Stack gap={2}>
+                                <Stack gap={2} key={skill.id}>
                                   <li>
                                     <Badge bg="info" text="dark">
                                       {skill.name}
